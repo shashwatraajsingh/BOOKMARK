@@ -26,6 +26,7 @@ async signup(dto: AuthDto){
         
         
     });
+      return this.signToken(user.id, user.email);
     
     
 }
@@ -69,28 +70,17 @@ async signin(dto: AuthDto){
 
     return this.signToken(user.id, user.email);
 }
-async signToken(
-    userId: number, 
-    email: string
-): Promise<{ access_token: string; token_type: string }> {
-    const payload = {
-        sub: userId,
-        email
-    };
+    async signToken(userId: number, email: string): Promise<{ access_token: string }> {
+        const payload = { sub: userId, email };
+        const secret = this.config.get('JWT_SECRET');
+        
+        const token = await this.jwt.signAsync(payload, {
+            expiresIn: '15m',
+            secret: secret,
+        });
 
+        return { access_token: token };
 
-        const secret=this.config.get('JWT_SECRET')
-        const token = await this.jwt.signAsync(
-      payload,
-      {
-        expiresIn: '15m',
-        secret: secret,
-      },
-    );
-   return {
-        access_token: token,
-        token_type: 'Bearer'  // Explicitly include token type
-    };
         
 
 }

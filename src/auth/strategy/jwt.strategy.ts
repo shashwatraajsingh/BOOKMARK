@@ -25,7 +25,7 @@ import { ExtractJwt, Strategy } from 'passport-jwt';
 import { StrategyOptionsWithoutRequest } from 'passport-jwt';
 
 @Injectable()
-export class JwtStrategy extends PassportStrategy(Strategy, 'jwt,') {
+export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
   constructor(configService: ConfigService) {
     const jwtSecret = configService.get<string>('JWT_SECRET');
     
@@ -44,6 +44,7 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt,') {
     console.log({
         payload,
     });
+    console.log('✅ JWT payload received by strategy:', payload);
     
     return payload;
   }

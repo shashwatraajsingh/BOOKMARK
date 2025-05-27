@@ -3,11 +3,12 @@ import { PrismaService } from "src/prisma/prisma.service";
 import { AuthDto } from "./dto";
 import * as argon from 'argon2';
 import { PrismaClientKnownRequestError } from "generated/prisma/runtime/library";
+import { JwtService } from "@nestjs/jwt";
 // import { user, Bookmark } from "generated/prisma";
 
 @Injectable({})
 export class AuthService{
-    constructor(private prisma:PrismaService){}
+    constructor(private prisma:PrismaService, private jwt:JwtService){}
     
 
 
@@ -70,6 +71,11 @@ async signin(dto: AuthDto){
     }
 
     return {msg: 'you are logged in'};
+}
+async signToken(
+    userId:number, email:string){
+        
+
 }
 }
 

@@ -23,10 +23,13 @@ import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { StrategyOptionsWithoutRequest } from 'passport-jwt';
+import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
-  constructor(configService: ConfigService) {
+  constructor(configService: ConfigService,
+              private prisma:PrismaService,
+  ) {
     const jwtSecret = configService.get<string>('JWT_SECRET');
     
     if (!jwtSecret) {
@@ -40,12 +43,21 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
     } satisfies StrategyOptionsWithoutRequest);
   }
 
-  async validate(payload: any) {
-    console.log({
-        payload,
-    });
-    console.log('✅ JWT payload received by strategy:', payload);
+  async validate(payload:  {
+    sub:number;
+    email:string;
     
-    return payload;
+    }) {
+      const user=
+      await this.prisma.user.findUnique({
+        where:{
+          id:payload.sub,
+        },
+
+      });
+      return payload;
+    }
+    
+    
+    
   }
-}

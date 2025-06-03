@@ -17,7 +17,7 @@ export class AuthService{
 async signup(dto: AuthDto){
     const hash =await argon.hash(dto.password);
     try{
-    const user =await this.prisma.user.create({ // it will return the password has and email if we want to stop 
+    const user =await this.prisma.user.create({ // it will return the password hash and email if we want to stop 
                                                 // getting password hash we have to use select as password hash can be danger
         data:{
             email: dto.email,

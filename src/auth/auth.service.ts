@@ -1,11 +1,21 @@
-import { ForbiddenException, Injectable } from "@nestjs/common";
-import { PrismaService } from "src/prisma/prisma.service";
-import { AuthDto } from "./dto";
-import * as argon from 'argon2';
-import { PrismaClientKnownRequestError } from "generated/prisma/runtime/library";
-import { JwtService } from "@nestjs/jwt";
-import { ConfigService } from "@nestjs/config";
+// import { ForbiddenException, Injectable } from "@nestjs/common";
+// import { PrismaService } from "src/prisma/prisma.service";
+// import { AuthDto } from "./dto";
+// import * as argon from 'argon2';
+// import { PrismaClientKnownRequestError } from "generated/prisma/runtime/library";
+// import { JwtService } from "@nestjs/jwt";
+// import { ConfigService } from "@nestjs/config";
 // import { user, Bookmark } from "generated/prisma";
+import {
+  ForbiddenException,
+  Injectable,
+} from '@nestjs/common';
+import { AuthDto } from './dto';
+import * as argon from 'argon2';
+import { JwtService } from '@nestjs/jwt';
+import { ConfigService } from '@nestjs/config';
+import { PrismaService } from '../prisma/prisma.service';
+import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 
 @Injectable({})
 export class AuthService{
@@ -85,6 +95,8 @@ async signin(dto: AuthDto){
 
 }
 }
+
+console.log('PrismaService imported successfully');
 
 
 //installed argon2 
